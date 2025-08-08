@@ -1,25 +1,24 @@
 package snowsan0113.drawmap;
 
-import com.google.gson.JsonObject;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
+import snowsan0113.drawmap.api.tsunami.TsunamiDrawMap;
+import snowsan0113.drawmap.api.tsunami.TsunamiType;
 import snowsan0113.drawmap.util.DrawUtil;
-import snowsan0113.drawmap.util.quake.TsunamiAPI;
-import snowsan0113.drawmap.util.quake.TsunamiAreaType;
+import snowsan0113.drawmap.api.tsunami.TsunamiAPI;
+import snowsan0113.drawmap.api.tsunami.TsunamiAreaType;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.util.List;
-import java.util.zip.InflaterInputStream;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, FactoryException, TransformException {
+    public static void main(String[] args) throws IOException {
         System.out.println("取得したい番号：");
         Scanner scan = new Scanner(System.in);
         int index = scan.nextInt();
@@ -38,26 +37,26 @@ public class Main {
         for (TsunamiAreaType tsunamiAreaType : TsunamiAreaType.values()) {
             if (!areaMap.containsKey(tsunamiAreaType)) continue;
 
-            TsunamiAPI.TsunamiType grade = areaMap.get(tsunamiAreaType).getGrade();
-            if (grade != TsunamiAPI.TsunamiType.UNKNOWN) {
+            TsunamiType grade = areaMap.get(tsunamiAreaType).getGrade();
+            if (grade != TsunamiType.UNKNOWN) {
                 System.out.println(tsunamiAreaType.getJPString() + ":" + grade.getString() + "\n");
 
-                if (grade == TsunamiAPI.TsunamiType.MAJORWARNING) {
+                if (grade == TsunamiType.MAJORWARNING) {
                     List<TsunamiAreaType> list = map.get(new Color(200, 0, 100));
                     list.add(tsunamiAreaType);
                 }
-                else if (grade == TsunamiAPI.TsunamiType.WARNING) {
+                else if (grade == TsunamiType.WARNING) {
                     List<TsunamiAreaType> list = map.get(Color.RED);
                     list.add(tsunamiAreaType);
                 }
-                else if (grade == TsunamiAPI.TsunamiType.WATCH) {
+                else if (grade == TsunamiType.WATCH) {
                     List<TsunamiAreaType> list = map.get(Color.YELLOW);
                     list.add(tsunamiAreaType);
                 }
             }
         }
 
-        BufferedImage image = DrawUtil.createDrawMap(map);
+        BufferedImage image = TsunamiDrawMap.createDrawMap(map);
         ImageIO.write(image, "png", new File("tsunami.png"));
 
     }
