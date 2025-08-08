@@ -1,4 +1,4 @@
-package snowsan0113.drawmap.util.quake;
+package snowsan0113.drawmap.api.tsunami;
 
 public enum TsunamiAreaType {
 
