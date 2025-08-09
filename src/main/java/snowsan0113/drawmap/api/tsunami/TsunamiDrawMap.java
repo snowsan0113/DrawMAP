@@ -22,7 +22,7 @@ public class TsunamiDrawMap {
         BufferedImage map = DrawUtil.getMap();
         Graphics2D g2d = map.createGraphics();
         g2d.setPaint(new Color(255, 255, 255, 1));
-        g2d.fillRect(0, 0, 1280, 720);
+        g2d.fillRect(0, 0, 1280, 1080);
         g2d.drawImage(getTsunamiArea(color_map), 0, 0, null);
         g2d.dispose();
 
@@ -50,6 +50,6 @@ public class TsunamiDrawMap {
 
         }
 
-        return DrawUtil.createImage(map);
+        return DrawUtil.createImage(map, null, 1280, 1080);
     }
 }

@@ -27,19 +27,17 @@ import java.util.Map;
 
 public class DrawUtil {
 
-    private static int width = 1280, height = 1080;
-
     public static BufferedImage getMap() throws IOException {
         SimpleFeatureSource featureSource = getFeature(new File("F:\\Users\\user\\Downloads\\20190125_AreaForecastLocalEEW_GIS\\緊急地震速報／府県予報区.shp"));
         MapContent map = new MapContent();
         SimpleFeatureCollection features = featureSource.getFeatures();
         map.addLayer(new FeatureLayer(features, createStyle(Color.LIGHT_GRAY, 2f, 0.8f)));
 
-        return createImage(map);
+        return createImage(map, null, 1280, 1080);
     }
 
-    public static BufferedImage createImage(MapContent map) {
-        ReferencedEnvelope envelope = map.layers().getFirst().getBounds();
+    public static BufferedImage createImage(MapContent map, ReferencedEnvelope envelope, int width, int height) {
+        if (envelope == null) envelope = map.layers().getFirst().getBounds();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setPaint(new Color(255, 255, 255, 1));
