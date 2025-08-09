@@ -2,6 +2,8 @@ package snowsan0113.drawmap;
 
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
+import snowsan0113.drawmap.api.quake.QuakeAPI;
+import snowsan0113.drawmap.api.quake.QuakeDrawMap;
 import snowsan0113.drawmap.api.tsunami.TsunamiDrawMap;
 import snowsan0113.drawmap.api.tsunami.TsunamiType;
 import snowsan0113.drawmap.util.DrawUtil;
@@ -23,8 +25,15 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         int index = scan.nextInt();
 
-        TsunamiAPI tsunami = new TsunamiAPI(4);
-        TsunamiAPI.Areas area = new TsunamiAPI.Areas(4, index);
+        QuakeAPI api = new QuakeAPI(10, index);
+        for (QuakeAPI.PointData pointData : api.getPointList()) {
+            System.out.println(pointData.toString());
+        }
+
+       ImageIO.write(QuakeDrawMap.createDrawMap(index), "png", new File("eew.png"));
+
+        TsunamiAPI tsunami = new TsunamiAPI(10);
+        TsunamiAPI.Areas area = new TsunamiAPI.Areas(10, index);
         Map<TsunamiAreaType, TsunamiAPI.Areas.AreaData> areaMap = area.getAreaMap();
 
         System.out.println(areaMap.toString() + "\n");
